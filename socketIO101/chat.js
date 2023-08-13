@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-env node */
+
 const express = require('express');
 const app = express();
 const socketio = require('socket.io');
@@ -12,8 +13,9 @@ const io = socketio(expressServer);
 io.on('connection', (socket) => {
   console.log(socket.id, 'has connected');
   //in ws we use send method and in socketio we use the emit method
-  socket.emit('messageFromServer', { data: 'Welcome to the socket server!' });
-  socket.on('messageFromClient', (data) => {
-    console.log('Data:', data);
+  //socket.emit('messageFromServer', { data: 'Welcome to the socket server!' });
+  socket.on('newMessageToServer', (dataFromClient) => {
+    console.log('Data:', dataFromClient);
+    io.emit('newMessageToClients', { text: dataFromClient.text });
   });
 });
