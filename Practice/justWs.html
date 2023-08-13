@@ -1,0 +1,13 @@
+<script>
+  let ws = new WebSocket('ws://localhost:8000');
+  console.log(ws);
+
+  ws.onopen = (event) => {
+    console.log(event);
+    ws.send('im so excited im connected to the server');
+  };
+
+  ws.onmessage = (message) => {
+    console.log(message.data);
+  };
+</script>
