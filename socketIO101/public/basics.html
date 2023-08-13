@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- socket.io is added by the socketio server-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      //socket.io.js is oging to add the io object the global scope
+      const socket = io('http://localhost:8000');
+      //console.log(socket);
+      socket.on('connect', () => {
+        console.log(socket.id);
+        socket.on('messageFromServer', (data) => {
+          console.log(data);
+        });
+        socket.emit('messageFromClient', { data: 'Hello, from the browser!' });
+      });
+    </script>
+  </body>
+</html>
