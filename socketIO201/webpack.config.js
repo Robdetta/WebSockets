@@ -3,7 +3,7 @@ const path = require('node:path');
 module.exports = {
   mode: 'development',
   target: 'node',
-  entry: './src/slackClone/slack.ts',
+  entry: './src/slackClone/public/scripts.ts',
   externals: [
     {
       'utf-8-validate': 'commonjs utf-8-validate',

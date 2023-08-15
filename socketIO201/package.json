@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon dist/slackClone/slack.js",
-    "build": "webpack-dev-server --mode development"
+    "build": "webpack-dev-server --mode development --port 8000"
   },
   "keywords": [],
   "author": "",
