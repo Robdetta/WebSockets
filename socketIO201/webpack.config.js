@@ -1,7 +1,15 @@
 const path = require('node:path');
 
 module.exports = {
+  mode: 'development',
   entry: './src/slackClone/public/slack.ts',
+  devServer: {
+    static: [
+      {
+        directory: path.join(__dirname),
+      },
+    ],
+  },
   module: {
     rules: [
       {
@@ -17,6 +25,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '.dist'),
+    publicPath: '/dist/',
   },
 };
 
