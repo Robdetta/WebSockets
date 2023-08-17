@@ -1,7 +1,7 @@
 import { Namespace } from './classes/Namespace';
 
 const joinNs = (element: Element, nsData: Namespace[]) => {
-  const nsEndPoint = element.getAttribute('ns');
+  const nsEndPoint = element.getAttribute('ns') ?? '';
   console.log(nsEndPoint);
 
   const clickedNs = nsData.find(
@@ -17,6 +17,8 @@ const joinNs = (element: Element, nsData: Namespace[]) => {
   rooms.forEach((room: { roomTitle: string }) => {
     roomList.innerHTML += `<li><span class="glyphicon glyphicon-lock"></span>${room.roomTitle}</li>`;
   });
+
+  localStorage.setItem('lastNs', nsEndPoint);
 };
 
 export { joinNs };

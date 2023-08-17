@@ -18,6 +18,7 @@ socket.on('connect', () => {
 socket.on('nsList', (nsData) => {
   console.log(nsData);
   const nameSpacesDiv = document.querySelector('.namespaces') as HTMLElement;
+  nameSpacesDiv.innerHTML = '';
   nsData.forEach((ns: { endpoint: string; image: string }) => {
     //update the HTML with each ns
     nameSpacesDiv.innerHTML += `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`;
@@ -26,9 +27,10 @@ socket.on('nsList', (nsData) => {
   Array.from(document.getElementsByClassName('namespace')).forEach(
     (element) => {
       console.log(element);
-      element.addEventListener('click', (e) => {
+      element.addEventListener('click', (/*e*/) => {
         joinNs(element, nsData);
       });
     },
   );
+  joinNs(document.getElementsByClassName('namespace')[0], nsData);
 });
