@@ -1,4 +1,12 @@
-class Room {
+interface IRoom {
+  roomId: number;
+  roomTitle: string;
+  namespaceId: number;
+  privateRoom: boolean;
+  history: string[];
+}
+
+class Room implements IRoom {
   roomId: number;
   roomTitle: string;
   namespaceId: number;
@@ -27,4 +35,4 @@ class Room {
   }
 }
 
-export { Room };
+export type { Room, IRoom };

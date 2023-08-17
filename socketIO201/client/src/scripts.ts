@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client';
+import { joinNs } from './joinNs';
 
 // const userName = prompt('What is your username?');
 // const password = prompt('What is your user password?');
@@ -26,13 +27,7 @@ socket.on('nsList', (nsData) => {
     (element) => {
       console.log(element);
       element.addEventListener('click', (e) => {
-        const nsEndPoint = element.getAttribute('ns');
-        console.log(nsEndPoint);
-
-        const clickedNs = nsData.find(
-          (row: { endpoint: string | null }) => row.endpoint === nsEndPoint,
-        );
-        console.log(clickedNs);
+        joinNs(element, nsData);
       });
     },
   );
