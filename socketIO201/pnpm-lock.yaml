@@ -8,6 +8,9 @@ importers:
 
   client:
     dependencies:
+      '@types/node':
+        specifier: ^20.5.0
+        version: 20.5.0
       bootstrap:
         specifier: ^5.3.1
         version: 5.3.1(@popperjs/core@2.11.8)
@@ -23,7 +26,7 @@ importers:
         version: 5.1.6
       vite:
         specifier: ^4.4.9
-        version: 4.4.9(sass@1.65.1)
+        version: 4.4.9(@types/node@20.5.0)(sass@1.65.1)
 
   server:
     dependencies:
@@ -348,7 +351,6 @@ packages:
 
   /@types/node@20.5.0:
     resolution: {integrity: sha512-Mgq7eCtoTjT89FqNoTzzXg2XvCi5VMhRV6+I2aYanc6kQCBImeNaAYRs/DyoVqk1YEUJK5gN9VO7HRIdz4Wo3Q==}
-    dev: false
 
   /@types/qs@6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
@@ -1260,7 +1262,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /vite@4.4.9(sass@1.65.1):
+  /vite@4.4.9(@types/node@20.5.0)(sass@1.65.1):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -1288,6 +1290,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.5.0
       esbuild: 0.18.20
       postcss: 8.4.28
       rollup: 3.28.0
