@@ -1,0 +1,12 @@
+{
+  "name": "socketio201",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "--filter 'backend' dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
