@@ -3,4 +3,4 @@
 //   image: string;
 // }
 
-// export type { Namespace };
+// export type{ Namespace };
