@@ -35,4 +35,4 @@ class Room implements IRoom {
   }
 }
 
-export type { Room, IRoom };
+export { Room };
