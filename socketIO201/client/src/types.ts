@@ -1,6 +1,6 @@
-interface Namespace {
-  name: string;
-  image: string;
-}
+// interface Namespace {
+//   name: string;
+//   image: string;
+// }
 
-export type { Namespace };
+// export type { Namespace };

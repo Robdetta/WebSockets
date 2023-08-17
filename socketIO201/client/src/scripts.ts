@@ -4,6 +4,9 @@ import { Namespace } from './types';
 // const userName = prompt('What is your username?');
 // const password = prompt('What is your user password?');
 
+const userName = 'Rob';
+const password = 'x';
+
 const socket = io('http://localhost:3000');
 
 socket.on('connect', () => {
