@@ -1,16 +1,27 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
-const app = express();
+
+import { createServer } from 'http';
 import { Server } from 'socket.io';
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3001',
+  },
+});
 
 app.use(express.static(path.join(__dirname + '/public')));
 
-const expressServer = app.listen(3001);
+app.use('/', async (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, 'public', 'slack.html'));
+});
 
 console.log(`listening on port 3001`);
-const io = new Server(expressServer);
 
 io.on('connection', (socket) => {
   console.log(socket.id, 'has connected');
   socket.emit('welcome', 'Welcome to the server');
 });
+
+httpServer.listen(3001);
