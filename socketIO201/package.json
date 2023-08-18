@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "--filter 'backend' dev"
+    "server": "pnpm --filter \"server\" dev",
+    "client": "pnpm --filter \"client\" dev"
   },
   "keywords": [],
   "author": "",

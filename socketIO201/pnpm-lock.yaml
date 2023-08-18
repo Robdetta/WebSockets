@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  client:
+  .: {}
+
+  packages/client:
     dependencies:
       '@types/node':
         specifier: ^20.5.0
@@ -28,7 +30,7 @@ importers:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.0)(sass@1.65.1)
 
-  server:
+  packages/server:
     dependencies:
       '@types/express':
         specifier: ^4.17.17
