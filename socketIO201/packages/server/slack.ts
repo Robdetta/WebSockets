@@ -20,10 +20,6 @@ server.listen(3000, () => {
   console.log(`listening on port ${3000}`);
 });
 
-app.get('/change-ns', (req, res) => {
-  res.json('Page hit');
-});
-
 io.on('connection', (socket) => {
   socket.emit('welcome', 'Welcome to the server!');
   socket.on('clientConnect', () => {
@@ -38,13 +34,16 @@ io.on('connection', (socket) => {
 //   });
 // });
 
-namespaces.forEach((namespace) => {
-  const endPointName = namespace.endpoint;
-  const nsSocket = io.of(endPointName);
-  //console.log(nsSocket);
-  console.log(endPointName);
+const namespaceEndpoints = namespaces.map((namespace) => namespace.endpoint);
+
+console.log(namespaceEndpoints);
+
+// Set up namespace connections
+namespaceEndpoints.forEach((endpoint) => {
+  const nsSocket = io.of(endpoint);
+  console.log(endpoint);
 
   nsSocket.on('connection', (socket) => {
-    console.log(`${socket.id} has connected to ${endPointName}`);
+    console.log(`${socket.id} has connected to ${endpoint}`);
   });
 });

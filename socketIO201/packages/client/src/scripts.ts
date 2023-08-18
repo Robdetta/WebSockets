@@ -20,11 +20,11 @@ socket.on('nsList', (nsData) => {
   console.log(nsData);
   const nameSpacesDiv = document.querySelector('.namespaces') as HTMLElement;
   nameSpacesDiv.innerHTML = '';
-  nsData.forEach((ns: { endpoint: string; image: string }) => {
+  nsData.forEach((ns: { endpoint: string; image: string; id: number }) => {
     //update the HTML with each ns
     nameSpacesDiv.innerHTML += `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`;
-    //join this namespace with io()
-    io(`http://localhost:5173/${ns.endpoint}`);
+
+    //initialize thisNS as its index
   });
 
   Array.from(document.getElementsByClassName('namespace')).forEach(
