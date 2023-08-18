@@ -7,7 +7,7 @@ import { joinNs } from './joinNs';
 const userName = 'Rob';
 const password = 'x';
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:3000/');
 
 socket.on('connect', () => {
   console.log('Connected!');
@@ -23,6 +23,8 @@ socket.on('nsList', (nsData) => {
   nsData.forEach((ns: { endpoint: string; image: string }) => {
     //update the HTML with each ns
     nameSpacesDiv.innerHTML += `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`;
+    //join this namespace with io()
+    io(`http://localhost:5173/${ns.endpoint}`);
   });
 
   Array.from(document.getElementsByClassName('namespace')).forEach(
