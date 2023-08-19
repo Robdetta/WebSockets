@@ -28,22 +28,22 @@ io.on('connection', (socket) => {
   });
 });
 
-// namespaces.forEach((namespace) => {
-//   io.of(namespace.name).on('connection', (socket) => {
-//     console.log(`${socket.id} has connected to ${namespace.name}`);
-//   });
-// });
-
-const namespaceEndpoints = namespaces.map((namespace) => namespace.endpoint);
-
-console.log(namespaceEndpoints);
-
-// Set up namespace connections
-namespaceEndpoints.forEach((endpoint) => {
-  const nsSocket = io.of(endpoint);
-  console.log(endpoint);
-
-  nsSocket.on('connection', (socket) => {
-    console.log(`${socket.id} has connected to ${endpoint}`);
+namespaces.forEach((namespace) => {
+  io.of(namespace.name).on('connection', (socket) => {
+    console.log(`${socket.id} has connected to ${namespace.name}`);
   });
 });
+
+// const namespaceEndpoints = namespaces.map((namespace) => namespace.endpoint);
+
+// console.log(namespaceEndpoints);
+
+// // Set up namespace connections
+// namespaceEndpoints.forEach((endpoint) => {
+//   const nsSocket = io.of(endpoint);
+//   console.log(endpoint);
+
+//   nsSocket.on('connection', (socket) => {
+//     console.log(`${socket.id} has connected to ${endpoint}`);
+//   });
+// });
