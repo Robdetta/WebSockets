@@ -43,3 +43,6 @@ socket.on('nsList', (nsData) => {
     }
   }
 });
+
+const videoSocket = io('/chat');
+console.log(videoSocket);
