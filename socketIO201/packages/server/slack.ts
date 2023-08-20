@@ -5,7 +5,8 @@ import cors from 'cors';
 import { namespaces } from '../client/src/data/namespaces';
 
 const app = express();
-app.use(cors());
+
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 const server = createServer(app);
 

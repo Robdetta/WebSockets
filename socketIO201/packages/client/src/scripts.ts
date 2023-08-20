@@ -7,7 +7,7 @@ import { joinNs } from './joinNs';
 const userName = 'Rob';
 const password = 'x';
 
-const socket = io('http://localhost:3000/');
+const socket = io('http://localhost:3000');
 
 socket.on('connect', () => {
   console.log('Connected!');
@@ -36,13 +36,12 @@ socket.on('nsList', (nsData) => {
     },
   );
   //if lastNs is set, grab that element instead of zero
-  if (lastNs) {
-    const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
-    if (lastNsElement) {
-      joinNs(lastNsElement, nsData);
-    }
-  }
-});
 
-const videoSocket = io('/chat');
-console.log(videoSocket);
+  //Save last selected Room as the default
+  // if (lastNs) {
+  //   const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
+  //   if (lastNsElement) {
+  //     joinNs(lastNsElement, nsData);
+  //   }
+  // }
+});
