@@ -18,7 +18,7 @@ socket.on('connect', () => {
 socket.on('nsList', (nsData) => {
   const lastNs = localStorage.getItem('lastNs');
   console.log(nsData);
-  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDivElement;
+  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDiElement;
   //CHECK THIS POINT INCASE OF THE NAMESPACE ERROR
 
   nameSpacesDiv.innerHTML = '';
