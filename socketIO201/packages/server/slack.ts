@@ -31,5 +31,22 @@ io.on('connection', (socket) => {
   socket.emit('nsList', namespaces);
 });
 
-// Create separate namespaces using .of(namespace)
-namespaces.forEach((namespace) => {});
+//Create separate namespaces using .of(namespace)
+namespaces.forEach((namespace) => {
+  const thisNs = io.of(namespace.endpoint);
+  io.on('connection', (socket) => {
+    console.log(`${socket.id} has connected to ${thisNs.name}`);
+  });
+});
+// namespaces.forEach((namespace) => {
+//   const ns = io.of(namespace.endpoint);
+//   io.on('connection', (socket) => {
+//     console.log(`${socket.id} has connected to ${ns.name}`);
+
+//     // Emit namespace-specific events
+//     socket.emit('nsList', namespaces);
+//     socket.on('someEvent', (data) => {
+//       // Handle events specific to this namespace
+//     });
+//   });
+// });

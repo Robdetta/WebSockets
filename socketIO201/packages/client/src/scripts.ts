@@ -18,7 +18,7 @@ socket.on('connect', () => {
 socket.on('nsList', (nsData) => {
   const lastNs = localStorage.getItem('lastNs');
   console.log(nsData);
-  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDiElement;
+  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDivElement;
   //CHECK THIS POINT INCASE OF THE NAMESPACE ERROR
 
   nameSpacesDiv.innerHTML = '';
@@ -38,15 +38,15 @@ socket.on('nsList', (nsData) => {
     },
   );
 
-  // joinNs(document.getElementsByClassName('namespace')[0], nsData);
+  joinNs(document.getElementsByClassName('namespace')[0], nsData);
 
   //if lastNs is set, grab that element instead of zero
 
   //Save last selected Room as the default
-  if (lastNs) {
-    const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
-    if (lastNsElement) {
-      joinNs(lastNsElement, nsData);
-    }
-  }
+  // if (lastNs) {
+  //   const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
+  //   if (lastNsElement) {
+  //     joinNs(lastNsElement, nsData);
+  //   }
+  // }
 });
