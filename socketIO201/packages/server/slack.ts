@@ -1,6 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import cors from 'cors';
 import { namespaces } from '../client/src/data/namespaces';
 
@@ -30,41 +30,11 @@ io.on('connection', (socket) => {
 });
 
 namespaces.forEach((namespace) => {
-  io.of(namespace.name).on('connection', (socket) => {
-    console.log(`${socket.id} has connected to ${namespace.name}`);
+  const ns = io.of(namespace.endpoint);
+  console.log(ns);
+
+  // Debugging for user connections within the namespace
+  io.on('connection', (socket) => {
+    console.log(`${socket.id} has connected to ${ns.name}`);
   });
 });
-
-// const namespaceEndpoints = namespaces.map((namespace) => namespace.endpoint);
-
-// console.log(namespaceEndpoints);
-
-// // Set up namespace connections
-// namespaceEndpoints.forEach((endpoint) => {
-//   const nsSocket = io.of(endpoint);
-//   console.log(endpoint);
-
-//   nsSocket.on('connection', (socket) => {
-//     console.log(`${socket.id} has connected to ${endpoint}`);
-//   });
-// });
-
-const namespaceEndpoints = namespaces.map((namespace) => namespace.endpoint);
-
-console.log(namespaceEndpoints);
-
-const chatNsp = io.of('/chat');
-chatNsp.on('connection', (socket) => {
-  console.log(`${socket.id} connected to chat namespace`);
-  /* chat namespace listeners here */
-});
-
-// Set up namespace connections
-// namespaceEndpoints.forEach((endpoint) => {
-//   const nsSocket = io.of(endpoint);
-//   console.log(endpoint);
-
-//   nsSocket.on('connection', (socket) => {
-//     console.log(`${socket.id} has connected to ${endpoint}`);
-//   });
-// });
