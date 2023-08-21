@@ -25,6 +25,8 @@ socket.on('nsList', (nsData) => {
   nsData.forEach((ns: { endpoint: string; image: string; id: number }) => {
     //update the HTML with each ns
     nameSpacesDiv.innerHTML += `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`;
+    //join this namespace with io()
+    io(`http://localhost:3000${ns.endpoint}`);
 
     //initialize thisNS as its index
   });

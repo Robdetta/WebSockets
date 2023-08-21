@@ -27,26 +27,14 @@ io.on('connection', (socket) => {
   socket.emit('welcome', 'Welcome to the server!');
   socket.on('clientConnect', () => {
     console.log(socket.id, 'has connected');
+    socket.emit('nsList', namespaces);
   });
-  socket.emit('nsList', namespaces);
 });
 
 //Create separate namespaces using .of(namespace)
 namespaces.forEach((namespace) => {
-  const thisNs = io.of(namespace.endpoint);
+  //const thisNs = io.of(namespace.endpoint);
   io.on('connection', (socket) => {
-    console.log(`${socket.id} has connected to ${thisNs.name}`);
+    console.log(`${socket.id} has connected to ${namespace.endpoint}`);
   });
 });
-// namespaces.forEach((namespace) => {
-//   const ns = io.of(namespace.endpoint);
-//   io.on('connection', (socket) => {
-//     console.log(`${socket.id} has connected to ${ns.name}`);
-
-//     // Emit namespace-specific events
-//     socket.emit('nsList', namespaces);
-//     socket.on('someEvent', (data) => {
-//       // Handle events specific to this namespace
-//     });
-//   });
-// });

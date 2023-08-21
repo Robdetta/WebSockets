@@ -1,7 +1,7 @@
 import { Namespace } from './classes/Namespace';
 
 const joinNs = (element: Element, nsData: Namespace[]) => {
-  const nsEndPoint = element.getAttribute('ns') ?? '';
+  const nsEndPoint = element.getAttribute('ns') || '';
   console.log(nsEndPoint);
 
   const clickedNs = nsData.find(
