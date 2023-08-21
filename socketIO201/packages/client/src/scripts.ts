@@ -33,7 +33,7 @@ const addListeners = (nsId: number) => {
 //listen for the nsList event from the server which gives use the namespaces
 socket.on('nsList', (nsData) => {
   const lastNs = localStorage.getItem('lastNs');
-  console.log(nsData);
+  //console.log(nsData);
   const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDivElement;
   nameSpacesDiv.innerHTML = '';
   nsData.forEach((ns: { endpoint: string; image: string; id: number }) => {
