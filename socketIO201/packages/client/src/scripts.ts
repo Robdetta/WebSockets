@@ -14,21 +14,36 @@ socket.on('connect', () => {
   socket.emit('clientConnect');
 });
 
+//sockets will be put into this array, in the index of the ns.id
+const nameSpaceSockets = [];
+
 //listen for the nsList event from the server which gives use the namespaces
 socket.on('nsList', (nsData) => {
   const lastNs = localStorage.getItem('lastNs');
   console.log(nsData);
   const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDivElement;
-  //CHECK THIS POINT INCASE OF THE NAMESPACE ERROR
-
   nameSpacesDiv.innerHTML = '';
   nsData.forEach((ns: { endpoint: string; image: string; id: number }) => {
     //update the HTML with each ns
     nameSpacesDiv.innerHTML += `<div class="namespace" ns="${ns.endpoint}"><img src="${ns.image}"></div>`;
-    //join this namespace with io()
-    io(`http://localhost:3000${ns.endpoint}`);
 
-    //initialize thisNS as its index
+    //initialize thisNs as its index in namespace socket
+    //if the connection is new, this will be nul
+    //if the connection has already been established, it will reconnect and remain in its spot
+    let thisNs = nameSpaceSockets[ns.id];
+
+    if (!nameSpaceSockets[ns.id]) {
+      //There is no socket at this
+      //join this namespace with io()
+      thisNs = io(`http://localhost:3000${ns.endpoint}`);
+    }
+
+    nameSpaceSockets[ns.id] = thisNs;
+
+    thisNs.on('nsChange', (data) => {
+      console.log('Namespace Changed!');
+      console.log(data);
+    });
   });
 
   Array.from(document.getElementsByClassName('namespace')).forEach(

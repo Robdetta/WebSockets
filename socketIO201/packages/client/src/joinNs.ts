@@ -1,5 +1,7 @@
 import { Namespace } from './classes/Namespace';
 
+//we could ask the server for fresh info, THIS IS BAD
+//we have Socket IO, and the server will tell us when something has happened
 const joinNs = (element: Element, nsData: Namespace[]) => {
   const nsEndPoint = element.getAttribute('ns') || '';
   console.log(nsEndPoint);

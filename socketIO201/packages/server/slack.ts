@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import { namespaces } from '../client/src/data/namespaces';
+import { Room } from '../client/src/classes/Room';
 
 const app = express();
 
@@ -21,6 +22,15 @@ const io = new Server(server, {
 
 server.listen(3000, () => {
   console.log(`listening on port ${3000}`);
+});
+
+//manufactured way to change a nameshape(without building huge UI)
+app.get('/change-ns', (req, res) => {
+  //update namespaces array
+  namespaces[0].addRoom(new Room(0, 'Deleted Articles', 0));
+  //let everyone know in THIS namespace, that it changed
+  io.of(namespaces[0].endpoint).emit('nsChange', namespaces[0]);
+  res.json(namespaces[0]);
 });
 
 io.on('connection', (socket) => {
