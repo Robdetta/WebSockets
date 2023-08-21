@@ -44,9 +44,9 @@ io.on('connection', (socket: Socket) => {
 namespaces.forEach((namespace) => {
   const thisNs = io.of(namespace.endpoint);
   thisNs.on('connection', (socket: Socket) => {
-    console.log(`${socket.id} has connected to ${namespace.endpoint}`);
-    socket.on('joinRoom', (data) => {
-      console.log(data);
+    //console.log(`${socket.id} has connected to ${namespace.endpoint}`);
+    socket.on('joinRoom', (roomTitle) => {
+      socket.join(roomTitle);
     });
   });
 });
