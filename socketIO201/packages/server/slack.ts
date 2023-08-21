@@ -1,9 +1,8 @@
-import express from 'express';
+import express, { Response, Request } from 'express';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import cors from 'cors';
 import { namespaces } from '../client/src/data/namespaces';
-import { Room } from '../client/src/classes/Room';
 
 const app = express();
 
@@ -25,15 +24,15 @@ server.listen(3000, () => {
 });
 
 //manufactured way to change a nameshape(without building huge UI)
-app.get('/change-ns', (req, res) => {
+app.get('/change-ns', (req: Request, res: Response) => {
   //update namespaces array
-  namespaces[0].addRoom(new Room(0, 'Deleted Articles', 0));
+  //namespaces[0].addRoom(new Room(0, 'Deleted Articles', 0));
   //let everyone know in THIS namespace, that it changed
   io.of(namespaces[0].endpoint).emit('nsChange', namespaces[0]);
   res.json(namespaces[0]);
 });
 
-io.on('connection', (socket) => {
+io.on('connection', (socket: Socket) => {
   socket.emit('welcome', 'Welcome to the server!');
   socket.on('clientConnect', () => {
     console.log(socket.id, 'has connected');
@@ -43,8 +42,11 @@ io.on('connection', (socket) => {
 
 //Create separate namespaces using .of(namespace)
 namespaces.forEach((namespace) => {
-  //const thisNs = io.of(namespace.endpoint);
-  io.on('connection', (socket) => {
+  const thisNs = io.of(namespace.endpoint);
+  thisNs.on('connection', (socket: Socket) => {
     console.log(`${socket.id} has connected to ${namespace.endpoint}`);
+    socket.on('joinRoom', (data) => {
+      console.log(data);
+    });
   });
 });

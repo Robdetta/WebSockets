@@ -1,4 +1,4 @@
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { joinNs } from './joinNs';
 
 // const userName = prompt('What is your username?');
@@ -15,7 +15,20 @@ socket.on('connect', () => {
 });
 
 //sockets will be put into this array, in the index of the ns.id
-const nameSpaceSockets = [];
+const nameSpaceSockets: Socket[] = [];
+const listeners: { nsChange: boolean[] } = { nsChange: [] };
+
+const addListeners = (nsId: number) => {
+  if (!listeners.nsChange[nsId]) {
+    nameSpaceSockets[nsId].on('nsChange', (data) => {
+      console.log('Namespace changed!');
+      console.log(data);
+    });
+    listeners.nsChange[nsId] = true;
+  } else {
+    //nothing to do
+  }
+};
 
 //listen for the nsList event from the server which gives use the namespaces
 socket.on('nsList', (nsData) => {
@@ -30,20 +43,16 @@ socket.on('nsList', (nsData) => {
     //initialize thisNs as its index in namespace socket
     //if the connection is new, this will be nul
     //if the connection has already been established, it will reconnect and remain in its spot
-    let thisNs = nameSpaceSockets[ns.id];
+    //let thisNs = nameSpaceSockets[ns.id];
 
     if (!nameSpaceSockets[ns.id]) {
       //There is no socket at this
       //join this namespace with io()
-      thisNs = io(`http://localhost:3000${ns.endpoint}`);
+      nameSpaceSockets[ns.id] = io(`http://localhost:3000${ns.endpoint}`);
     }
+    addListeners(ns.id);
 
-    nameSpaceSockets[ns.id] = thisNs;
-
-    thisNs.on('nsChange', (data) => {
-      console.log('Namespace Changed!');
-      console.log(data);
-    });
+    //nameSpaceSockets[ns.id] = thisNs;
   });
 
   Array.from(document.getElementsByClassName('namespace')).forEach(
@@ -55,15 +64,18 @@ socket.on('nsList', (nsData) => {
     },
   );
 
-  joinNs(document.getElementsByClassName('namespace')[0], nsData);
+  // on refesh the lobby is reset
+  // joinNs(document.getElementsByClassName('namespace')[0], nsData);
 
   //if lastNs is set, grab that element instead of zero
 
   //Save last selected Room as the default
-  // if (lastNs) {
-  //   const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
-  //   if (lastNsElement) {
-  //     joinNs(lastNsElement, nsData);
-  //   }
-  // }
+  if (lastNs) {
+    const lastNsElement = document.querySelector(`[ns="${lastNs}"]`);
+    if (lastNsElement) {
+      joinNs(lastNsElement, nsData);
+    }
+  }
 });
+
+export { nameSpaceSockets };
