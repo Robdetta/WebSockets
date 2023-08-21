@@ -18,6 +18,10 @@ socket.on('connect', () => {
 const nameSpaceSockets: Socket[] = [];
 const listeners: { nsChange: boolean[] } = { nsChange: [] };
 
+//a global variable we can update when the user clicks on a namespace
+//we will use it to broadcast across the app
+let selectedNsId: number = 0;
+
 const addListeners = (nsId: number) => {
   if (!listeners.nsChange[nsId]) {
     nameSpaceSockets[nsId].on('nsChange', (data) => {
@@ -78,4 +82,4 @@ socket.on('nsList', (nsData) => {
   }
 });
 
-export { nameSpaceSockets };
+export { nameSpaceSockets, selectedNsId };
