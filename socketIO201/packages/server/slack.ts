@@ -23,7 +23,7 @@ server.listen(3000, () => {
   console.log(`listening on port ${3000}`);
 });
 
-//manufactured way to change a nameshape(without building huge UI)
+//manufactured way to change a namespace(without building huge UI)
 app.get('/change-ns', (req: Request, res: Response) => {
   //update namespaces array
   //namespaces[0].addRoom(new Room(0, 'Deleted Articles', 0));
@@ -73,6 +73,17 @@ namespaces.forEach((namespace) => {
       ackCallBack({
         numUsers: socketCount,
       });
+    });
+    socket.on('newMessageToRoom', (messageObj) => {
+      console.log(messageObj);
+      //braodcast this to all the connected clients... this room only
+
+      const rooms = socket.rooms;
+      const currentRoom = [...rooms][1];
+      //send out the messageObj to everyone including the sender
+      io.of(namespace.endpoint)
+        .in(currentRoom)
+        .emit('messageToRoom', messageObj);
     });
   });
 });

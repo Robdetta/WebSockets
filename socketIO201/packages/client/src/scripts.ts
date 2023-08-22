@@ -17,7 +17,10 @@ socket.on('connect', () => {
 
 //sockets will be put into this array, in the index of the ns.id
 const nameSpaceSockets: Socket[] = [];
-const listeners: { nsChange: boolean[] } = { nsChange: [] };
+const listeners: { nsChange: boolean[]; messageToRoom: boolean[] } = {
+  nsChange: [],
+  messageToRoom: [],
+};
 
 //a global variable we can update when the user clicks on a namespace
 //we will use it to broadcast across the app
@@ -35,8 +38,16 @@ document
       document.querySelector<HTMLInputElement>('#user-message');
     const newMessage = inputElement?.value;
     console.log(newMessage, getSelectedNsId());
+    nameSpaceSockets[getSelectedNsId()].emit('newMessageToRoom', {
+      newMessage,
+      date: Date.now(),
+      avatar: 'https://via.placeholder.com/30',
+      userName,
+    });
   });
 
+//add listeners job is to manage all listeners added to all names
+//this prevents listeners being added multiple times, makes life better as dev
 const addListeners = (nsId: number) => {
   if (!listeners.nsChange[nsId]) {
     nameSpaceSockets[nsId].on('nsChange', (data) => {
@@ -44,8 +55,13 @@ const addListeners = (nsId: number) => {
       console.log(data);
     });
     listeners.nsChange[nsId] = true;
-  } else {
-    //nothing to do
+  }
+  if (!listeners.messageToRoom[nsId]) {
+    //add the nsId listener to this namespace!
+    nameSpaceSockets[nsId].on('messageToRoom', (messageObj) => {
+      console.log(messageObj);
+    });
+    listeners.messageToRoom[nsId] = true;
   }
 };
 
