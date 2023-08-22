@@ -32,7 +32,7 @@ app.get('/change-ns', (req: Request, res: Response) => {
   res.json(namespaces[0]);
 });
 
-io.once('connection', (socket: Socket) => {
+io.on('connection', (socket: Socket) => {
   socket.emit('welcome', 'Welcome to the server!');
   socket.on('clientConnect', () => {
     console.log(socket.id, 'has connected');
