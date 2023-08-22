@@ -1,5 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { joinNs } from './joinNs';
+import { setSelectedNsId, getSelectedNsId } from './sharedState';
 
 // const userName = prompt('What is your username?');
 // const password = prompt('What is your user password?');
@@ -20,7 +21,21 @@ const listeners: { nsChange: boolean[] } = { nsChange: [] };
 
 //a global variable we can update when the user clicks on a namespace
 //we will use it to broadcast across the app
-let selectedNsId: number = 0;
+// let selectedNsId: number = 0;
+setSelectedNsId(0);
+
+//add a submit handler for the form
+document
+  .querySelector('#message-form')
+  ?.addEventListener('submit', (e: Event) => {
+    //keep the browser from submitting
+    e.preventDefault();
+    //grab the value of the input box
+    const inputElement =
+      document.querySelector<HTMLInputElement>('#user-message');
+    const newMessage = inputElement?.value;
+    console.log(newMessage, getSelectedNsId());
+  });
 
 const addListeners = (nsId: number) => {
   if (!listeners.nsChange[nsId]) {
@@ -35,10 +50,10 @@ const addListeners = (nsId: number) => {
 };
 
 //listen for the nsList event from the server which gives use the namespaces
-socket.on('nsList', (nsData) => {
+socket.once('nsList', (nsData) => {
   const lastNs = localStorage.getItem('lastNs');
   //console.log(nsData);
-  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLDivElement;
+  const nameSpacesDiv = document.querySelector('.namespaces') as HTMLElement;
   nameSpacesDiv.innerHTML = '';
   nsData.forEach((ns: { endpoint: string; image: string; id: number }) => {
     //update the HTML with each ns
@@ -82,4 +97,4 @@ socket.on('nsList', (nsData) => {
   }
 });
 
-export { nameSpaceSockets, selectedNsId };
+export { nameSpaceSockets };

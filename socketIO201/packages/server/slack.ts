@@ -32,7 +32,7 @@ app.get('/change-ns', (req: Request, res: Response) => {
   res.json(namespaces[0]);
 });
 
-io.on('connection', (socket: Socket) => {
+io.once('connection', (socket: Socket) => {
   socket.emit('welcome', 'Welcome to the server!');
   socket.on('clientConnect', () => {
     console.log(socket.id, 'has connected');
@@ -45,7 +45,6 @@ namespaces.forEach((namespace) => {
   const thisNs = io.of(namespace.endpoint);
   thisNs.on('connection', (socket: Socket) => {
     //console.log(`${socket.id} has connected to ${namespace.endpoint}`);
-
     socket.on('joinRoom', async (roomTitle, ackCallBack) => {
       //need to fetch the history
 

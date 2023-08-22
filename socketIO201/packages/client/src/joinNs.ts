@@ -1,18 +1,20 @@
 import { Namespace } from './classes/Namespace';
 import { joinRoom } from './joinRoom';
-import { selectedNsId } from './scripts';
+import { getSelectedNsId } from './sharedState';
 
 //we could ask the server for fresh info, THIS IS BAD
 //we have Socket IO, and the server will tell us when something has happened
 const joinNs = (element: Element, nsData: Namespace[]) => {
   const nsEndPoint = element.getAttribute('ns') ?? '';
-  console.log(nsEndPoint);
+  //console.log(nsEndPoint);
 
   const clickedNs = nsData.find(
     (ns) => ns.endpoint === nsEndPoint,
   ) as Namespace;
   //global so we can submit a new message to the right place
-  selectedNsId = clickedNs.id;
+  let currentNsIs = getSelectedNsId();
+  //global so we can submit the new message to the right place
+  currentNsIs = clickedNs.id;
   const rooms = clickedNs.rooms;
 
   //get the room list div

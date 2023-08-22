@@ -7,7 +7,7 @@ const joinRoom = async (roomTitle: string, namespaceId: number) => {
     roomTitle,
   );
 
-  console.log(ackResp);
+  //console.log(ackResp);
 
   const currRoomNumUsers = document.querySelector(
     '.curr-room-num-users',
