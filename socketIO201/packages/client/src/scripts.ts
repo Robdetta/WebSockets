@@ -38,12 +38,17 @@ document
       document.querySelector<HTMLInputElement>('#user-message');
     const newMessage = inputElement?.value;
     console.log(newMessage, getSelectedNsId());
-    nameSpaceSockets[getSelectedNsId()].emit('newMessageToRoom', {
+    const selectedNsId = getSelectedNsId();
+    nameSpaceSockets[selectedNsId].emit('newMessageToRoom', {
       newMessage,
       date: Date.now(),
       avatar: 'https://via.placeholder.com/30',
       userName,
+      nsId: selectedNsId, // Pass the selected namespace ID
     });
+    if (inputElement) {
+      inputElement.value = '';
+    }
   });
 
 //add listeners job is to manage all listeners added to all names
@@ -60,6 +65,8 @@ const addListeners = (nsId: number) => {
     //add the nsId listener to this namespace!
     nameSpaceSockets[nsId].on('messageToRoom', (messageObj) => {
       console.log(messageObj);
+      const messages = document.querySelector('#messages') as HTMLElement;
+      messages.innerHTML += buildMessageHtml(messageObj);
     });
     listeners.messageToRoom[nsId] = true;
   }
@@ -112,5 +119,32 @@ socket.once('nsList', (nsData) => {
     }
   }
 });
+
+const buildMessageHtml = (messageObj: {
+  newMessage: string;
+  userName: string;
+  date: Date;
+  avatar: string;
+}) => {
+  return `<li>
+              <div class="user-image">
+                  <img src=${messageObj.avatar} />
+              </div>
+              <div class="user-message">
+                  <div class="user-name-time">${` ${messageObj.userName} `}<span>${new Date(
+                    messageObj.date,
+                  ).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                  })}</span></div>
+                  <div class="message-text">${messageObj.newMessage}</div>
+              </div>
+            </li>
+            `;
+};
 
 export { nameSpaceSockets };

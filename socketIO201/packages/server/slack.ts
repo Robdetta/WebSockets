@@ -78,12 +78,20 @@ namespaces.forEach((namespace) => {
       console.log(messageObj);
       //braodcast this to all the connected clients... this room only
 
-      const rooms = socket.rooms;
-      const currentRoom = [...rooms][1];
+      const rooms = Array.from(socket.rooms);
+      const currentRoom = rooms[1];
+
       //send out the messageObj to everyone including the sender
       io.of(namespace.endpoint)
         .in(currentRoom)
         .emit('messageToRoom', messageObj);
+      //add this message to this room's history
+      const thisNs = namespaces[messageObj.nsId];
+      const thisRoom = thisNs.rooms.find(
+        (room) => room.roomTitle === currentRoom,
+      );
+      console.log(thisRoom);
+      thisRoom?.addMessage(messageObj);
     });
   });
 });
