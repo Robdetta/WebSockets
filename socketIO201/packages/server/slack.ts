@@ -45,8 +45,13 @@ namespaces.forEach((namespace) => {
   const thisNs = io.of(namespace.endpoint);
   thisNs.on('connection', (socket: Socket) => {
     //console.log(`${socket.id} has connected to ${namespace.endpoint}`);
-    socket.on('joinRoom', async (roomTitle, ackCallBack) => {
+    socket.on('joinRoom', async (roomObj, ackCallBack) => {
       //need to fetch the history
+      const thisNs = namespaces[roomObj.namespaceId];
+      const thisRoomObj = thisNs.rooms.find(
+        (room) => room.roomTitle === roomObj.roomTitle,
+      );
+      const thisRoomHistory = thisRoomObj?.history;
 
       //leave all rooms, because the client can only be in one room
       const rooms = socket.rooms;
@@ -62,16 +67,17 @@ namespaces.forEach((namespace) => {
 
       //ROOM Title is coming from client
       //some kind of auth here
-      socket.join(roomTitle);
+      socket.join(roomObj.roomTitle);
       //fetch the number of sockets in this room
       const sockets = await io
         .of(namespace.endpoint)
-        .in(roomTitle)
+        .in(roomObj.roomTitle)
         .fetchSockets();
 
       const socketCount = sockets.length;
       ackCallBack({
         numUsers: socketCount,
+        thisRoomHistory,
       });
     });
     socket.on('newMessageToRoom', (messageObj) => {

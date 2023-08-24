@@ -1,6 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { joinNs } from './joinNs';
 import { setSelectedNsId, getSelectedNsId } from './sharedState';
+import { buildMessageHtml } from './buildMessageHtml';
 
 // const userName = prompt('What is your username?');
 // const password = prompt('What is your user password?');
@@ -119,32 +120,5 @@ socket.once('nsList', (nsData) => {
     }
   }
 });
-
-const buildMessageHtml = (messageObj: {
-  newMessage: string;
-  userName: string;
-  date: Date;
-  avatar: string;
-}) => {
-  return `<li>
-              <div class="user-image">
-                  <img src=${messageObj.avatar} />
-              </div>
-              <div class="user-message">
-                  <div class="user-name-time">${` ${messageObj.userName} `}<span>${new Date(
-                    messageObj.date,
-                  ).toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                  })}</span></div>
-                  <div class="message-text">${messageObj.newMessage}</div>
-              </div>
-            </li>
-            `;
-};
 
 export { nameSpaceSockets };
