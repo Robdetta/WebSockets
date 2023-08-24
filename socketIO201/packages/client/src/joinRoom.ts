@@ -2,12 +2,13 @@ import { buildMessageHtml } from './buildMessageHtml';
 import { nameSpaceSockets } from './scripts';
 
 interface AckResponse {
-  thisRoomHistory: string[];
-  numUsers: string;
-  newMessage: string;
-  userName: string;
-  date: Date;
-  avatar: string;
+  thisRoomHistory: {
+    newMessage: string;
+    userName: string;
+    date: Date;
+    avatar: string;
+  }[];
+  numUsers: number;
 }
 
 const joinRoom = async (roomTitle: string, namespaceId: number) => {
@@ -34,16 +35,9 @@ const joinRoom = async (roomTitle: string, namespaceId: number) => {
   //we get back the room history in the acknowledgement as well
   const roomMsgHistory = document.querySelector('#messages') as HTMLElement;
   roomMsgHistory.innerHTML = '';
-  ackResp.thisRoomHistory.forEach(
-    (message: {
-      newMessage: string;
-      userName: string;
-      date: Date;
-      avatar: string;
-    }) => {
-      roomMsgHistory.innerHTML += buildMessageHtml(message); // Append to roomMsgHistory
-    },
-  );
+  ackResp.thisRoomHistory.forEach((message) => {
+    return (roomMsgHistory.innerHTML += buildMessageHtml(message)); // Append to roomMsgHistory
+  });
 };
 
 export { joinRoom };

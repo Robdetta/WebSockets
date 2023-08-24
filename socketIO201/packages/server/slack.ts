@@ -77,7 +77,7 @@ namespaces.forEach((namespace) => {
       const socketCount = sockets.length;
       ackCallBack({
         numUsers: socketCount,
-        thisRoomHistory,
+        thisRoomHistory: thisRoomHistory,
       });
     });
     socket.on('newMessageToRoom', (messageObj) => {
